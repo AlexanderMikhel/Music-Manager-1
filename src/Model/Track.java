@@ -2,26 +2,38 @@ package Model;
 
 /**
  * Contains information about single track
+ *
  * @version 0.1
  */
 public class Track {
-    /**name of this track*/
+    /**
+     * name of this track
+     */
     private String trackName;
 
-    /**artist, who perform this track*/
+    /**
+     * artist, who perform this track
+     */
     private String trackArtist;
 
-    /**album, which contains this track*/
+    /**
+     * album, which contains this track
+     */
     private String trackAlbum;
 
-    /**length of this track in seconds*/
+    /**
+     * length of this track in seconds
+     */
     private int trackLength;
 
-    public Track (String trackName, String trackArtist, String trackAlbum, int trackLength){
-        this.trackName=trackName;
-        this.trackArtist=trackArtist;
-        this.trackAlbum=trackAlbum;
-        this.trackLength=trackLength;
+    private Genre trackGenre;
+
+    public Track(String trackName, String trackArtist, String trackAlbum, int trackLength, Genre trackGenre) {
+        this.trackName = trackName;
+        this.trackArtist = trackArtist;
+        this.trackAlbum = trackAlbum;
+        this.trackLength = trackLength;
+        this.trackGenre = trackGenre;
     }
 
     public void setTrackName(String trackName) {
@@ -54,5 +66,17 @@ public class Track {
 
     public int getTrackLength() {
         return trackLength;
+    }
+
+    public boolean equals(Object object) {
+        if (object == this) {
+            return true;
+        }
+        if (!(object instanceof Track)) {
+            return false;
+        }
+        Track track = (Track) object;
+        return ((this.trackName.equals(track.trackName)) && (this.trackArtist.equals(track.trackArtist)) &&
+                (this.trackAlbum.equals(track.trackAlbum)) && (this.trackLength == track.trackLength));
     }
 }
