@@ -35,6 +35,8 @@ public class Controller {
         System.out.println("-----------------------\n");
     }
 
+    public void setTrack()
+
     /**add genre*/
     public void setGenre(){
         System.out.println("Enter genre name");
