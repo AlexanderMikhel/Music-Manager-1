@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * This class keeping tracks and provides tools for managing them
  */
 public class Library {
-    private ArrayList<Track> tracksStore;
-    private ArrayList<Genre> genres;
+    private ArrayList<Track> tracksStore = new ArrayList<>();
+    private ArrayList<Genre> genres = new ArrayList<>();
 
     public Library() {
 
@@ -34,9 +34,9 @@ public class Library {
         genres.add(genre);
     }
 
-    public Genre getGenre(String genreName){
 
-        return null;
+    public ArrayList getTracks(){
+        return tracksStore;
     }
 
     public ArrayList getGenres(){

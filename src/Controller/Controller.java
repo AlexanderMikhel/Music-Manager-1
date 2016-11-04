@@ -14,6 +14,7 @@ public class Controller {
 
     /**add track to library*/
     public void setTrack(){
+        System.out.println("Added new track");
         System.out.println("Enter track name");
         String trackName=in.next();
         System.out.println("Enter name of the artist");
@@ -25,12 +26,13 @@ public class Controller {
         int seconds = in.nextInt();
         int trackLength = inSeconds(minutes, seconds);
 
-        System.out.println("Now, select genre");
+        /*System.out.println("Now, select genre");
         String genre=in.next();
-        Genre trackGenre = library.getGenre(genre);
+        Genre trackGenre = library.getGenre(genre);*/
 
-        Track track = new Track(trackName, trackArtist, trackAlbum,trackLength, trackGenre);
+        Track track = new Track(trackName, trackArtist, trackAlbum,trackLength);
         library.setTrack(track);
+        System.out.println("-----------------------\n");
     }
 
     /**add genre*/
@@ -47,6 +49,10 @@ public class Controller {
 
     public ArrayList getGenres(){
         return library.getGenres();
+    }
+
+    public ArrayList getTracks(){
+        return library.getTracks();
     }
     //
     private int inSeconds(int minutes, int seconds){

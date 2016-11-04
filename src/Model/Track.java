@@ -26,14 +26,14 @@ public class Track {
      */
     private int trackLength;
 
-    private Genre trackGenre;
+    //private Genre trackGenre;
 
-    public Track(String trackName, String trackArtist, String trackAlbum, int trackLength, Genre trackGenre) {
+    public Track(String trackName, String trackArtist, String trackAlbum, int trackLength) {
         this.trackName = trackName;
         this.trackArtist = trackArtist;
         this.trackAlbum = trackAlbum;
         this.trackLength = trackLength;
-        this.trackGenre = trackGenre;
+        //this.trackGenre = trackGenre;
     }
 
     public void setTrackName(String trackName) {

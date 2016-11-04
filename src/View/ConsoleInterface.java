@@ -2,6 +2,7 @@ package View;
 
 import Controller.Controller;
 import Model.Genre;
+import Model.Track;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -31,7 +32,7 @@ public class ConsoleInterface {
                 }
                 break;
                 case 4: {
-
+                    displayTracks(controller.getTracks());
                 }
                 break;
                 case 5: {
@@ -62,5 +63,17 @@ public class ConsoleInterface {
     private static void menuItems(String action) {
         System.out.println("1 - " + action + " track");
         System.out.println("2 - " + action + " genre");
+    }
+
+    private static void displayTracks(ArrayList<Track> tracks){
+        for (Track track:tracks) {
+            System.out.println("Name: "+track.getTrackName());
+            System.out.println("Artist: "+track.getTrackArtist());
+            System.out.println("Album: "+track.getTrackAlbum());
+            int minutes=track.getTrackLength()/60;
+            int seconds = track.getTrackLength()-minutes*60;
+            System.out.printf("Length: %d:%d\n", minutes, seconds);
+            System.out.println("-----------------------\n");
+        }
     }
 }
