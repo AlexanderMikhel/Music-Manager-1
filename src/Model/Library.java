@@ -13,21 +13,25 @@ import java.util.regex.Pattern;
 public class Library implements Serializable{
     private ArrayList<Track> tracksStore = new ArrayList<>();
     private ArrayList<Genre> genres = new ArrayList<>();
+    private int tracksQuantity=0;
+    private int genresQuantity=0;
 
     public Library() {
 
     }
 
     /**add to library numbers of tracks*/
-    public void setTracks(Genre[] genres){
-        for (Genre genre:genres) {
-            this.genres.add(genre);
+    public void setTracks(Track[] tracks){
+        for (Track track:tracks) {
+            this.tracksStore.add(track);
+            tracksQuantity++;
         }
     }
 
     /*add to library single track*/
     public void setTrack(Track track){
         tracksStore.add(track);
+        tracksQuantity++;
     }
 
     public void setTrack(Track track, int index){
@@ -35,15 +39,16 @@ public class Library implements Serializable{
     }
 
     /**the same way as methods with tracks*/
-    public void setGenres(Track[] tracks) {
-        tracksStore = new ArrayList<>();
-        for (Track track:tracks) {
-            this.tracksStore.add(track);
+    public void setGenres(Genre[] genres) {
+        for (Genre genre:genres) {
+            this.genres.add(genre);
+            genresQuantity++;
         }
     }
 
     public void setGenre(Genre genre){
         genres.add(genre);
+        genresQuantity++;
     }
 
 
@@ -72,7 +77,7 @@ public class Library implements Serializable{
     public ArrayList<Track> search(String str){
         ArrayList<Track> searchTrack= new ArrayList<>();
         Pattern p = Pattern.compile(str);
-        for(int i = 0; i< tracksStore.size(); i++ ) {
+        for(int i = 0; i< tracksQuantity; i++ ) {
             Matcher trackName=p.matcher(tracksStore.get(i).getTrackName());
             Matcher trackArtist=p.matcher(tracksStore.get(i).getTrackArtist());
             Matcher trackAlbum=p.matcher(tracksStore.get(i).getTrackAlbum());
@@ -83,6 +88,17 @@ public class Library implements Serializable{
             }
         }
         return searchTrack;
+    }
+
+    public Genre getGenre(String genre){
+        Pattern pattern = Pattern.compile(genre);
+        for (int i=0;i<genresQuantity;i++){
+            Matcher genreName= pattern.matcher(genres.get(i).getGenreName());
+            if (genreName.find()){
+                return genres.get(i);
+            }
+        }
+        return null;
     }
     /**methods for private usw only*/
 

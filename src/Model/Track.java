@@ -28,18 +28,22 @@ public class Track implements Serializable{
      */
     private int trackLength;
 
-    //private Genre trackGenre;
+    private Genre trackGenre;
 
-    public Track(String trackName, String trackArtist, String trackAlbum, int trackLength) {
+    public Track(String trackName, String trackArtist, String trackAlbum, int trackLength, Genre trackGenre) {
         this.trackName = trackName;
         this.trackArtist = trackArtist;
         this.trackAlbum = trackAlbum;
         this.trackLength = trackLength;
-        //this.trackGenre = trackGenre;
+        this.trackGenre = trackGenre;
     }
 
     public void setTrackName(String trackName) {
         this.trackName = trackName;
+    }
+
+    public Genre getTrackGenre() {
+        return trackGenre;
     }
 
     public void setTrackArtist(String trackArtist) {
