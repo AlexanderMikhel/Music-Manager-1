@@ -1,10 +1,12 @@
 package Model;
 
+import java.io.Serializable;
+
 /**
  * This class contains basic information about single genre
  * @version 0.1
  */
-public class Genre {
+public class Genre implements Serializable{
     /**name of this genre*/
     private String genreName;
 

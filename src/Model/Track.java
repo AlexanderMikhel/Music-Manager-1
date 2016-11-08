@@ -1,11 +1,13 @@
 package Model;
 
+import java.io.Serializable;
+
 /**
  * Contains information about single track
  *
  * @version 0.1
  */
-public class Track {
+public class Track implements Serializable{
     /**
      * name of this track
      */

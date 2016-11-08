@@ -3,6 +3,7 @@ package Controller;
 
 import Model.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,7 +11,9 @@ public class Controller {
     private Scanner in=new Scanner(System.in);
     private Library library = new Library();
 
-    public Controller(){}
+    public Controller(){
+        deSerialisation();
+    }
 
     /**add track to library*/
     public void setTrack(){
@@ -35,8 +38,6 @@ public class Controller {
         System.out.println("-----------------------\n");
     }
 
-    public void setTrack()
-
     /**add genre*/
     public void setGenre(){
         System.out.println("Enter genre name");
@@ -55,6 +56,34 @@ public class Controller {
 
     public ArrayList getTracks(){
         return library.getTracks();
+    }
+
+    public ArrayList<Track> search(){
+        System.out.println("Enter track name");
+        String string=in.next();
+        return library.search(string);
+    }
+
+    //ser
+    public void serialisation(){
+        try {
+            ObjectOutputStream saveChanges = new ObjectOutputStream(new FileOutputStream("src\\Model\\ser.dat"));
+            saveChanges.writeObject(library);
+            saveChanges.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deSerialisation(){
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("src\\Model\\ser.dat"));
+            library=(Library) inputStream.readObject();
+        } catch (IOException e) {
+            System.out.println("No save libraries");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
     //
     private int inSeconds(int minutes, int seconds){

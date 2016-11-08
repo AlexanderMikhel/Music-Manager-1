@@ -3,7 +3,11 @@ package View;
 import Controller.Controller;
 import Model.Genre;
 import Model.Track;
+import org.omg.CORBA.Object;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -36,12 +40,13 @@ public class ConsoleInterface {
                 }
                 break;
                 case 5: {
-                    menuItems("find");
-
+                    //menuItems("find");
+                    displayTracks(controller.search());
                 }
                 break;
             }
         }
+        controller.serialisation();
     }
 
     /**
@@ -66,6 +71,10 @@ public class ConsoleInterface {
     }
 
     private static void displayTracks(ArrayList<Track> tracks){
+        if (tracks.size()==0){
+            System.out.println("Library is empty");
+            System.out.println("------------------------------\n");
+        }
         for (Track track:tracks) {
             System.out.println("Name: "+track.getTrackName());
             System.out.println("Artist: "+track.getTrackArtist());

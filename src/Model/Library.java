@@ -1,11 +1,16 @@
 package Model;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class keeping tracks and provides tools for managing them
  */
-public class Library {
+public class Library implements Serializable{
     private ArrayList<Track> tracksStore = new ArrayList<>();
     private ArrayList<Genre> genres = new ArrayList<>();
 
@@ -61,13 +66,28 @@ public class Library {
 
     /**change exist track for a new*/
     public void setTrack(Track newTrack, String oldTrackName){
-
+        
     }
 
+    public ArrayList<Track> search(String str){
+        ArrayList<Track> searchTrack= new ArrayList<>();
+        Pattern p = Pattern.compile(str);
+        for(int i = 0; i< tracksStore.size(); i++ ) {
+            Matcher trackName=p.matcher(tracksStore.get(i).getTrackName());
+            Matcher trackArtist=p.matcher(tracksStore.get(i).getTrackArtist());
+            Matcher trackAlbum=p.matcher(tracksStore.get(i).getTrackAlbum());
+            if(trackName.find() || trackArtist.find() || trackAlbum.find()){
+                int j = 0;
+                searchTrack.add(j,tracksStore.get(i));
+                j++;
+            }
+        }
+        return searchTrack;
+    }
     /**methods for private usw only*/
 
     /**this method should realize search with rejex*/
     private int getTrackIndex(String string){
-
+        return 0;
     }
 }
