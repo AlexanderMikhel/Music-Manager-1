@@ -12,7 +12,7 @@ public class Controller {
     private Library library = new Library();
 
     public Controller() {
-        deSerialisation();
+        deSerialization();
     }
 
     /**
@@ -21,23 +21,29 @@ public class Controller {
     public void setTrack() {
         System.out.println("Added new track");
         System.out.println("Enter track name");
-        String trackName = in.next();
+        String trackName = in.nextLine();
         System.out.println("Enter name of the artist");
-        String trackArtist = in.next();
+        String trackArtist = in.nextLine();
         System.out.println("Enter name of the album");
-        String trackAlbum = in.next();
+        String trackAlbum = in.nextLine();
         System.out.println("Enter track length\nminutes, seconds");
         int minutes = in.nextInt();
         int seconds = in.nextInt();
         int trackLength = inSeconds(minutes, seconds);
 
         System.out.println("Now, select genre");
-        String genre = in.next();
+        String genre = in.nextLine();
         Genre trackGenre = library.getGenre(genre);
 
         Track track = new Track(trackName, trackArtist, trackAlbum, trackLength, trackGenre);
         library.setTrack(track);
         System.out.println("-----------------------\n");
+    }
+
+    public void setTrackData(){
+        System.out.println("Enter track that you want to change");
+        library.search(in.next());
+
     }
 
     /**
@@ -68,7 +74,7 @@ public class Controller {
     }
 
     //ser
-    public void serialisation() {
+    public void serialization() {
         try {
             ObjectOutputStream saveChanges = new ObjectOutputStream(new FileOutputStream("src\\Model\\ser.dat"));
             saveChanges.writeObject(library);
@@ -78,7 +84,7 @@ public class Controller {
         }
     }
 
-    public void deSerialisation() {
+    public void deSerialization() {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("src\\Model\\ser.dat"));
             library = (Library) inputStream.readObject();

@@ -7,7 +7,6 @@ import java.io.Serializable;
  * @version 0.1
  */
 public class Genre implements Serializable{
-    /**name of this genre*/
     private String genreName;
 
     /**century when this genre was established*/

@@ -3,11 +3,7 @@ package View;
 import Controller.Controller;
 import Model.Genre;
 import Model.Track;
-import org.omg.CORBA.Object;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -60,7 +56,7 @@ public class ConsoleInterface {
                 break;
             }
         }
-        controller.serialisation();
+        controller.serialization();
     }
 
     /**

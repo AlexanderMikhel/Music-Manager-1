@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE library [
+        <!ELEMENT track (genre)>
+        <!ELEMENT library (track*)>
+        <!ELEMENT genre EMPTY>
+
+        <!ATTLIST track
+                trackName CDATA #REQUIRED
+                trackArtist CDATA #REQUIRED
+                trackAlbum CDATA #REQUIRED
+                trackLength CDATA #REQUIRED>
+        <!ATTLIST library
+                >
+        <!ATTLIST genre
+                genreName CDATA #REQUIRED
+                establishingCentury CDATA #REQUIRED
+                >
+        ]>
+<library>
+    <track trackName="Come Fly With Me" trackArtist="Frank Sinatra" trackAlbum="Come Fly With Me" trackLength="199">
+        <genre genreName="Jazz" establishingCentury="20"></genre>
+    </track>
+    <track trackName="Nice 'N' Easy" trackArtist="Frank Sinatra" trackAlbum="Nice 'N' Easy" trackLength="214">
+        <genre genreName="Jazz" establishingCentury="20"/>
+    </track>
+    <track trackName="That Old Feeling" trackArtist="Frank Sinatra" trackAlbum="Nice 'N' Easy" trackLength="214">
+        <genre genreName="Jazz" establishingCentury="20"/>
+    </track>
+    
+    <track trackName="Aviation" trackArtist="The Last Shadow Puppets" trackAlbum="Everything You've Come To Expect"
+           trackLength="224">
+        <genre genreName="Alternative" establishingCentury="20"/>
+    </track>
+    <track trackName="Stay in My Corner" trackArtist="The Arcs" trackAlbum="Yours, Dreamily" trackLength="199">
+        <genre genreName="Alternative" establishingCentury="20"/>
+    </track>
+    <track trackName="No Stranger to Love" trackArtist="Black Sabbath" trackAlbum="Seventh Star" trackLength="269">
+        <genre genreName="Heavy Metal" establishingCentury="20"/>
+    </track>
+    <track trackName="She Sells Sanctuary" trackArtist="The Cult" trackAlbum="Love" trackLength="263">
+        <genre genreName="Alternative" establishingCentury="20"/>
+    </track>
+    <track trackName="April In Paris" trackArtist="Dean Martin" trackAlbum="French Style" trackLength="216">
+        <genre genreName="Vocal" establishingCentury="18"/>
+    </track>
+    <track trackName="L.A. Woman" trackArtist="The Doors" trackAlbum="L.A. Woman" trackLength="470">
+        <genre genreName="Rock" establishingCentury="20"/>
+    </track>
+    <track trackName="Two Steps from the Blues" trackArtist="Bobby Bland"
+           trackAlbum="Ain't No Love In the Heart of the City" trackLength="156">
+        <genre genreName="Blues" establishingCentury="20"/>
+    </track>
+    <track trackName="Drive" trackArtist="Joe Bonamassa" trackAlbum="Blues of Desperation" trackLength="347">
+        <genre genreName="20" establishingCentury="Blues"/>
+    </track>
+    <track trackName="The Blues Had a Baby and They Named It Rock and Roll" trackArtist="Muddy Waters"
+           trackAlbum="Hard Again"
+           trackLength="215">
+        <genre genreName="Blues" establishingCentury="20"/>
+    </track>
+    <track trackName="The Last Day" trackArtist="Moby" trackAlbum="Innosents" trackLength="280">
+        <genre genreName="Electronic" establishingCentury="21"/>
+    </track>
+    <track trackName="Retrograde" trackArtist="James Blake" trackAlbum="Retrograde" trackLength="224">
+        <genre genreName="Electronic" establishingCentury="21"/>
+    </track>
+    <track trackName="Almost Home" trackArtist="Moby" trackAlbum="Innosents" trackLength="360">
+        <genre genreName="Electronic" establishingCentury="21"/>
+    </track>
+</library>
