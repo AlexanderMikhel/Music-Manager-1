@@ -7,9 +7,9 @@ import Model.Track;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ConsoleInterface {
+public class ConsoleInterface{
     private static Scanner in = new Scanner(System.in);
-    private static Controller controller=new Controller();
+    //private static Controller controller=new Controller();
 
     public static void startApplication() {
         int close = 0;
@@ -20,10 +20,10 @@ public class ConsoleInterface {
                 case 1: {
                     switch (menuItems("add", false)){
                         case 1:{
-                            controller.setTrack();
+                            Controller.setTrack();
                         }break;
                         case 2:{
-                            controller.setGenre();
+                            Controller.setGenre();
                         }break;
                     }
                 }
@@ -41,22 +41,22 @@ public class ConsoleInterface {
                 case 4: {
                     switch (menuItems("browse", true)){
                         case 1:{
-                            displayTracks(controller.getTracks());
+                            displayTracks(Controller.getTracks());
                         }break;
                         case 2:{
-                            displayGenres(controller.getGenres());
+                            displayGenres(Controller.getGenres());
                         }break;
                     }
                 }
                 break;
                 case 5: {
                     //menuItems("find");
-                    displayTracks(controller.search());
+                    displayTracks(Controller.search());
                 }
                 break;
             }
         }
-        controller.serialization();
+        //controller.serialization();
     }
 
     /**
