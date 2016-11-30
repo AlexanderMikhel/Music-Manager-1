@@ -29,7 +29,7 @@ public class Controller {
     /**
      * add track to library
      */
-    public static void setTrack() {
+    public static void setTrack() throws IOException {
         System.out.println("Added new track");
         System.out.println("Enter track name");
         String trackName = in.nextLine();
@@ -50,11 +50,9 @@ public class Controller {
             setGenre();
             trackGenre = library.getGenre(genreName);
         }
-
-
         Track track = new Track(trackName, trackArtist, trackAlbum, trackLength, trackGenre);
         library.setTrack(track);
-        writeXml(library.getTracksQuantity(), track);
+        writeTrackXml(library.getTracksQuantity(), track);
         System.out.println("-----------------------\n");
     }
 
@@ -152,7 +150,7 @@ public class Controller {
      * @param index
      * @param object
      */
-    public static void writeXml(int index, Track object) {
+    public static void writeTrackXml(int index, Track object) throws IOException {
         NodeList tracks = xmlDoc.getElementsByTagName("track");
         Element newTrack = xmlDoc.createElement("track");
         //xmlDoc.appendChild(newTrack);
@@ -165,11 +163,12 @@ public class Controller {
         Node newGenre = xmlDoc.createElement("genre");
         ((Element) newGenre).setAttribute("genreName", object.getTrackGenre().getGenreName());
         ((Element) newGenre).setAttribute("establishingCentury", String.valueOf(object.getTrackGenre().getEstablishingCentury()));
+        newTrack.appendChild(newGenre);
         xmlDoc.getDocumentElement().appendChild(newTrack);
-
+        updateDocument();
     }
 
-    private void updateDocument() throws IOException {
+    private static void updateDocument() throws IOException {
         DOMImplementationLS domImplementationLS =
                 (DOMImplementationLS) xmlDoc.getImplementation().getFeature("LS", "3.0");
         LSOutput lsOutput = domImplementationLS.createLSOutput();

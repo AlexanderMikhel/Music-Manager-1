@@ -4,6 +4,7 @@ import Controller.Controller;
 import Model.Genre;
 import Model.Track;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class ConsoleInterface{
     private static Scanner in = new Scanner(System.in);
     //private static Controller controller=new Controller();
 
-    public static void startApplication() {
+    public static void startApplication() throws IOException {
         int close = 0;
         while (close != 6) {
             displayInformation();
@@ -54,9 +55,6 @@ public class ConsoleInterface{
                     displayTracks(Controller.search());
                 }
                 break;
-                case 6:{
-
-                }
             }
         }
         //controller.serialization();
@@ -72,8 +70,7 @@ public class ConsoleInterface{
         System.out.println("3 - change some data");
         System.out.println("4 - browse library");
         System.out.println("5 - find track");
-        System.out.println("6 - XML actions");
-        System.out.println("7 - close application\n");
+        System.out.println("6 - close application\n");
     }
 
     /**
