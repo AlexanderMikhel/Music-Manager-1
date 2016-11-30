@@ -12,6 +12,16 @@ public class Library implements Serializable{
     private ArrayList<Track> tracksStore = new ArrayList<>();
     private ArrayList<Genre> genres = new ArrayList<>();
     private int tracksQuantity=0;
+
+    public int getGenresQuantity() {
+        return genresQuantity;
+    }
+
+    public int getTracksQuantity() {
+
+        return tracksQuantity;
+    }
+
     private int genresQuantity=0;
 
     public Library() {

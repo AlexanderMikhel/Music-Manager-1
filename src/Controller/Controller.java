@@ -1,11 +1,12 @@
 package Controller;
 
-
 import Model.*;
 import org.w3c.dom.*;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
-import javax.swing.text.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Controller {
-    private final static String PATH = "C:\\Users\\gavri\\Documents\\NetCracker\\Curator\\MusicManager\\data\\xml\\library.xml";
+    private final static String PATH = "C:\\Users\\gavri\\Documents\\NetCracker\\Curator\\MusicManager\\data\\xml\\tracks.xml";
 
     private static Scanner in = new Scanner(System.in);
     private static Library library = new Library();
@@ -42,18 +43,19 @@ public class Controller {
         int trackLength = inSeconds(minutes, seconds);
 
         System.out.println("Now, select genre");
-        String genre = in.nextLine();
-        Genre trackGenre = library.getGenre(genre);
+        String genreName = "Rock";
+        Genre trackGenre = library.getGenre(genreName);
+        if (trackGenre == null) {
+            System.out.println("\nThis genre does not exist");
+            setGenre();
+            trackGenre = library.getGenre(genreName);
+        }
+
 
         Track track = new Track(trackName, trackArtist, trackAlbum, trackLength, trackGenre);
         library.setTrack(track);
+        writeXml(library.getTracksQuantity(), track);
         System.out.println("-----------------------\n");
-    }
-
-    public static void setTrackData() {
-        System.out.println("Enter track that you want to change");
-        library.search(in.next());
-
     }
 
     /**
@@ -140,6 +142,41 @@ public class Controller {
             } catch (NullPointerException e) {
                 library.setTrack(newTrack);
             }
+        }
+    }
+
+    /**
+     * This method receive track or genre and index of where this object should write.
+     * Length of library+1 if this object need to add into library, index<length when rewrite.
+     *
+     * @param index
+     * @param object
+     */
+    public static void writeXml(int index, Track object) {
+        NodeList tracks = xmlDoc.getElementsByTagName("track");
+        Element newTrack = xmlDoc.createElement("track");
+        //xmlDoc.appendChild(newTrack);
+        //Node newTrack = xmlDoc.createElement("track");
+        ((Element) newTrack).setAttribute("trackName", object.getTrackName());
+        ((Element) newTrack).setAttribute("trackArtist", object.getTrackArtist());
+        ((Element) newTrack).setAttribute("trackAlbum", object.getTrackAlbum());
+        ((Element) newTrack).setAttribute("trackLength", String.valueOf(object.getTrackLength()));
+
+        Node newGenre = xmlDoc.createElement("genre");
+        ((Element) newGenre).setAttribute("genreName", object.getTrackGenre().getGenreName());
+        ((Element) newGenre).setAttribute("establishingCentury", String.valueOf(object.getTrackGenre().getEstablishingCentury()));
+        xmlDoc.getDocumentElement().appendChild(newTrack);
+
+    }
+
+    private void updateDocument() throws IOException {
+        DOMImplementationLS domImplementationLS =
+                (DOMImplementationLS) xmlDoc.getImplementation().getFeature("LS", "3.0");
+        LSOutput lsOutput = domImplementationLS.createLSOutput();
+        try (FileOutputStream outputStream = new FileOutputStream(PATH)) {
+            lsOutput.setByteStream(outputStream);
+            LSSerializer lsSerializer = domImplementationLS.createLSSerializer();
+            lsSerializer.write(xmlDoc, lsOutput);
         }
     }
 }

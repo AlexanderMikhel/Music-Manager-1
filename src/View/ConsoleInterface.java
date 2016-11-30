@@ -54,6 +54,9 @@ public class ConsoleInterface{
                     displayTracks(Controller.search());
                 }
                 break;
+                case 6:{
+
+                }
             }
         }
         //controller.serialization();
@@ -69,7 +72,8 @@ public class ConsoleInterface{
         System.out.println("3 - change some data");
         System.out.println("4 - browse library");
         System.out.println("5 - find track");
-        System.out.println("6 - close application\n");
+        System.out.println("6 - XML actions");
+        System.out.println("7 - close application\n");
     }
 
     /**
