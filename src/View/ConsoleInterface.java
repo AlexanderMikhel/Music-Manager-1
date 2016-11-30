@@ -3,7 +3,10 @@ package View;
 import Controller.Controller;
 import Model.Genre;
 import Model.Track;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,7 +15,12 @@ public class ConsoleInterface{
     private static Scanner in = new Scanner(System.in);
     //private static Controller controller=new Controller();
 
-    public static void startApplication() throws IOException {
+    public static void startApplication() throws TransformerException, ParserConfigurationException {
+        initXml();
+        mainScreen();
+    }
+
+    private static void mainScreen(){
         int close = 0;
         while (close != 6) {
             displayInformation();
@@ -21,7 +29,11 @@ public class ConsoleInterface{
                 case 1: {
                     switch (menuItems("add", false)){
                         case 1:{
-                            Controller.setTrack();
+                            try {
+                                Controller.setTrack();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }break;
                         case 2:{
                             Controller.setGenre();
@@ -57,7 +69,21 @@ public class ConsoleInterface{
                 break;
             }
         }
-        //controller.serialization();
+    }
+
+    private static void initXml() throws TransformerException, ParserConfigurationException {
+        try {
+            Controller.createDocument();
+            Controller.readXml();
+        } catch (ParserConfigurationException e) {
+
+        } catch (IOException e) {
+            System.err.println("You library is empty");
+            Controller.createXmlFile();
+            mainScreen();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

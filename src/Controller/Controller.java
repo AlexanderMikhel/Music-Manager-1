@@ -2,14 +2,23 @@ package Controller;
 
 import Model.*;
 import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
+import javax.swing.text.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -43,7 +52,7 @@ public class Controller {
         int trackLength = inSeconds(minutes, seconds);
 
         System.out.println("Now, select genre");
-        String genreName = "Rock";
+        String genreName = in.nextLine();
         Genre trackGenre = library.getGenre(genreName);
         if (trackGenre == null) {
             System.out.println("\nThis genre does not exist");
@@ -83,6 +92,8 @@ public class Controller {
         return library.search(string);
     }
 
+
+
     //ser
     public static void serialization() {
         try {
@@ -118,6 +129,43 @@ public class Controller {
         xmlDoc = builder.parse(xmlFile);
     }
 
+    //unfinished
+    public static void createXmlFile() throws ParserConfigurationException, TransformerException {
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+
+        Element library = document.createElement("library");
+        document.appendChild(library);
+
+        Element track = document.createElement("track");
+        library.appendChild(track);
+
+        Element trackName = document.createElement("trackName");
+        track.appendChild(trackName);
+
+        Element trackArtist = document.createElement("trackArtist");
+        track.appendChild(trackArtist);
+
+        Element trackLength = document.createElement("trackLength");
+        track.appendChild(trackLength);
+
+        Element trackAlbum = document.createElement("trackAlbum");
+        track.appendChild(trackAlbum);
+
+        Element trackGenre = document.createElement("trackAlbum");
+        Element genreName = document.createElement("genreName");
+        Element establishingCentury = document.createElement("establishingCentury");
+        trackGenre.appendChild(genreName);
+        trackGenre.appendChild(establishingCentury);
+
+        track.appendChild(trackGenre);
+
+        String path = "C:\\Users\\gavri\\Documents\\NetCracker\\Curator\\MusicManager\\data\\xml\\library.txt";
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        DOMSource source = new DOMSource(document);
+        StreamResult result = new StreamResult(new File(System.getProperty(path)));
+        transformer.transform(source, result);
+    }
+
     public static void readXml() {
         NodeList tracks = xmlDoc.getElementsByTagName("track");
         for (int i = 0; i < tracks.getLength(); i++) {
@@ -125,9 +173,7 @@ public class Controller {
             String trackName = track.getNamedItem("trackName").getNodeValue();
             String trackArtist = track.getNamedItem("trackArtist").getNodeValue();
             String trackAlbum = track.getNamedItem("trackAlbum").getNodeValue();
-            ;
             int trackLength = Integer.parseInt(track.getNamedItem("trackLength").getNodeValue());
-            ;
             Genre genre = new Genre("Jazz", 20);
 
             Track newTrack = new Track(trackName, trackArtist, trackAlbum, trackLength, genre);
@@ -143,6 +189,13 @@ public class Controller {
         }
     }
 
+    private static void removeTrack(int index){
+        Element element = (Element) xmlDoc.getElementsByTagName("track").item(index);
+        Node parent = element.getParentNode();
+        parent.removeChild(element);
+        parent.normalize();
+    }
+
     /**
      * This method receive track or genre and index of where this object should write.
      * Length of library+1 if this object need to add into library, index<length when rewrite.
@@ -150,7 +203,7 @@ public class Controller {
      * @param index
      * @param object
      */
-    public static void writeTrackXml(int index, Track object) throws IOException {
+    private static void writeTrackXml(int index, Track object) throws IOException {
         NodeList tracks = xmlDoc.getElementsByTagName("track");
         Element newTrack = xmlDoc.createElement("track");
         //xmlDoc.appendChild(newTrack);
