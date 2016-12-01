@@ -1,19 +1,19 @@
-package View;
+package view;
 
-import Controller.Controller;
-import Model.Genre;
-import Model.Track;
+import controller.Controller;
+import model.Genre;
+import model.Track;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleInterface{
     private static Scanner in = new Scanner(System.in);
-    //private static Controller controller=new Controller();
 
     public static void startApplication() throws TransformerException, ParserConfigurationException {
         initXml();
@@ -22,9 +22,18 @@ public class ConsoleInterface{
 
     private static void mainScreen(){
         int close = 0;
+        boolean correctEnter = false;
         while (close != 6) {
             displayInformation();
-            close = in.nextInt();
+            while (!correctEnter) {
+                try {
+                    close = in.nextInt();
+                    correctEnter = true;
+                }catch (InputMismatchException e){
+                    System.err.println("Wrong enter");
+                    in.next();
+                }
+            }
             switch (close) {
                 case 1: {
                     switch (menuItems("add", false)){
@@ -42,8 +51,8 @@ public class ConsoleInterface{
                 }
                 break;
                 case 2: {
-                    menuItems("delete", false);
-
+                    //menuItems("delete", false);
+                    Controller.removeTrack(in.nextInt());
                 }
                 break;
                 case 3: {

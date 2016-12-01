@@ -1,6 +1,6 @@
-package Controller;
+package controller;
 
-import Model.*;
+import model.*;
 import org.w3c.dom.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,18 +9,17 @@ import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
-import javax.swing.text.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Controller {
@@ -47,9 +46,7 @@ public class Controller {
         System.out.println("Enter name of the album");
         String trackAlbum = in.nextLine();
         System.out.println("Enter track length\nminutes, seconds");
-        int minutes = in.nextInt();
-        int seconds = in.nextInt();
-        int trackLength = inSeconds(minutes, seconds);
+        int trackLength = enterTrackLength();
 
         System.out.println("Now, select genre");
         String genreName = in.nextLine();
@@ -93,11 +90,10 @@ public class Controller {
     }
 
 
-
     //ser
     public static void serialization() {
         try {
-            ObjectOutputStream saveChanges = new ObjectOutputStream(new FileOutputStream("src\\Model\\ser.dat"));
+            ObjectOutputStream saveChanges = new ObjectOutputStream(new FileOutputStream("src\\model\\ser.dat"));
             saveChanges.writeObject(library);
             saveChanges.close();
         } catch (IOException e) {
@@ -107,7 +103,7 @@ public class Controller {
 
     public static void deSerialization() {
         try {
-            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("src\\Model\\ser.dat"));
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("src\\model\\ser.dat"));
             library = (Library) inputStream.readObject();
         } catch (IOException e) {
             System.out.println("No save libraries");
@@ -119,6 +115,44 @@ public class Controller {
     //
     private static int inSeconds(int minutes, int seconds) {
         return minutes * 60 + seconds;
+    }
+
+    /**
+     *
+     *
+     * @return
+     */
+    private static int enterTrackLength() {
+        int minutes = 0;
+        int seconds = 0;
+        int failureCount = 0;
+
+        boolean correctMinutes = false;
+        boolean correctSeconds = false;
+        while (!correctMinutes) {
+            try {
+                minutes = in.nextInt();
+                correctMinutes = true;
+            } catch (InputMismatchException e) {
+                System.err.println("Enter minutes in numeric representation");
+                in.next();
+                failureCount++;
+            }
+        }
+        /**When user entered minutes many times, he can forget that after minutes he should enter seconds*/
+        if (failureCount > 1) {
+            System.out.println("Now, enter seconds");
+        }
+        while (!correctSeconds) {
+            try {
+                seconds = in.nextInt();
+                correctSeconds = true;
+            } catch (InputMismatchException e) {
+                System.err.println("Enter seconds in numeric representation");
+                in.next();
+            }
+        }
+        return inSeconds(minutes, seconds);
     }
 
     //XML
@@ -162,7 +196,8 @@ public class Controller {
         String path = "C:\\Users\\gavri\\Documents\\NetCracker\\Curator\\MusicManager\\data\\xml\\library.txt";
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         DOMSource source = new DOMSource(document);
-        StreamResult result = new StreamResult(new File(System.getProperty(path)));
+        //File file = new File(System.getProperty(path));
+        StreamResult result = new StreamResult("D:\\test.xml");
         transformer.transform(source, result);
     }
 
@@ -189,7 +224,7 @@ public class Controller {
         }
     }
 
-    private static void removeTrack(int index){
+    public static void removeTrack(int index) {
         Element element = (Element) xmlDoc.getElementsByTagName("track").item(index);
         Node parent = element.getParentNode();
         parent.removeChild(element);
