@@ -1,6 +1,4 @@
-package Model;
-
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,27 +6,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This class keeping tracks and provides tools for managing them
+ * This class keeps tracks and provides tools for managing them
  */
 public class Library implements Serializable{
     private ArrayList<Track> tracksStore = new ArrayList<>();
     private ArrayList<Genre> genres = new ArrayList<>();
     private int tracksQuantity=0;
+
+    public int getGenresQuantity() {
+        return genresQuantity;
+    }
+
+    public int getTracksQuantity() {
+
+        return tracksQuantity;
+    }
+
     private int genresQuantity=0;
 
     public Library() {
 
     }
 
-    /**add to library numbers of tracks*/
-    public void setTracks(Track[] tracks){
-        for (Track track:tracks) {
-            this.tracksStore.add(track);
-            tracksQuantity++;
-        }
-    }
-
-    /*add to library single track*/
     public void setTrack(Track track){
         tracksStore.add(track);
         tracksQuantity++;
@@ -38,19 +37,10 @@ public class Library implements Serializable{
 
     }
 
-    /**the same way as methods with tracks*/
-    public void setGenres(Genre[] genres) {
-        for (Genre genre:genres) {
-            this.genres.add(genre);
-            genresQuantity++;
-        }
-    }
-
     public void setGenre(Genre genre){
         genres.add(genre);
         genresQuantity++;
     }
-
 
     public ArrayList getTracks(){
         return tracksStore;
@@ -60,6 +50,7 @@ public class Library implements Serializable{
         return genres;
     }
 
+    /**find and return track*/
     public Track getTrack(String trackName){
         return tracksStore.get(getTrackIndex(trackName));
     }
@@ -69,7 +60,6 @@ public class Library implements Serializable{
         tracksStore.remove(getTrackIndex(trackName));
     }
 
-    /**change exist track for a new*/
     public void setTrack(Track newTrack, String oldTrackName){
         
     }
@@ -102,7 +92,7 @@ public class Library implements Serializable{
     }
     /**methods for private usw only*/
 
-    /**this method should realize search with rejex*/
+    /**find and return index*/
     private int getTrackIndex(String string){
         return 0;
     }

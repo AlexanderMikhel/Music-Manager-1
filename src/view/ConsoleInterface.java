@@ -1,40 +1,58 @@
-package View;
+package view;
 
-import Controller.Controller;
-import Model.Genre;
-import Model.Track;
-import org.omg.CORBA.Object;
+import controller.Controller;
+import model.Genre;
+import model.Track;
+import org.xml.sax.SAXException;
 
-import java.io.FileOutputStream;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ConsoleInterface {
+public class ConsoleInterface{
     private static Scanner in = new Scanner(System.in);
-    private static Controller controller=new Controller();
 
-    public static void startApplication() {
+    public static void startApplication() throws TransformerException, ParserConfigurationException {
+        initXml();
+        mainScreen();
+    }
+
+    private static void mainScreen(){
         int close = 0;
+        boolean correctEnter = false;
         while (close != 6) {
             displayInformation();
-            close = in.nextInt();
+            while (!correctEnter) {
+                try {
+                    close = in.nextInt();
+                    correctEnter = true;
+                }catch (InputMismatchException e){
+                    System.err.println("Wrong enter");
+                    in.next();
+                }
+            }
             switch (close) {
                 case 1: {
                     switch (menuItems("add", false)){
                         case 1:{
-                            controller.setTrack();
+                            try {
+                                Controller.setTrack();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }break;
                         case 2:{
-                            controller.setGenre();
+                            Controller.setGenre();
                         }break;
                     }
                 }
                 break;
                 case 2: {
-                    menuItems("delete", false);
-
+                    //menuItems("delete", false);
+                    Controller.removeTrack(in.nextInt());
                 }
                 break;
                 case 3: {
@@ -45,22 +63,36 @@ public class ConsoleInterface {
                 case 4: {
                     switch (menuItems("browse", true)){
                         case 1:{
-                            displayTracks(controller.getTracks());
+                            displayTracks(Controller.getTracks());
                         }break;
                         case 2:{
-                            displayGenres(controller.getGenres());
+                            displayGenres(Controller.getGenres());
                         }break;
                     }
                 }
                 break;
                 case 5: {
                     //menuItems("find");
-                    displayTracks(controller.search());
+                    displayTracks(Controller.search());
                 }
                 break;
             }
         }
-        controller.serialisation();
+    }
+
+    private static void initXml() throws TransformerException, ParserConfigurationException {
+        try {
+            Controller.createDocument();
+            Controller.readXml();
+        } catch (ParserConfigurationException e) {
+
+        } catch (IOException e) {
+            System.err.println("You library is empty");
+            Controller.createXmlFile();
+            mainScreen();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

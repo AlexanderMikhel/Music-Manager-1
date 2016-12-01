@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!ELEMENT track (genre)>
+        <!ELEMENT library (track*)>
+        <!ELEMENT genre EMPTY>
+
+        <!ATTLIST track
+                trackName CDATA #REQUIRED
+                trackArtist CDATA #REQUIRED
+                trackAlbum CDATA #REQUIRED
+                trackLength CDATA #REQUIRED>
+        <!ATTLIST library
+                >
+        <!ATTLIST genre
+                genreName CDATA #REQUIRED
+                establishingCentury CDATA #REQUIRED
+                >
