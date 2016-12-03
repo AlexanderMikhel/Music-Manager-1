@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ConsoleInterface{
+public class ConsoleInterface {
     private static Scanner in = new Scanner(System.in);
 
     public static void startApplication() throws TransformerException, ParserConfigurationException {
@@ -20,33 +20,27 @@ public class ConsoleInterface{
         mainScreen();
     }
 
-    private static void mainScreen(){
+    private static void mainScreen() throws TransformerException, ParserConfigurationException {
         int close = 0;
         boolean correctEnter = false;
         while (close != 6) {
             displayInformation();
-            while (!correctEnter) {
-                try {
-                    close = in.nextInt();
-                    correctEnter = true;
-                }catch (InputMismatchException e){
-                    System.err.println("Wrong enter");
-                    in.next();
-                }
-            }
+            close = enterMenuItem(6);
             switch (close) {
                 case 1: {
-                    switch (menuItems("add", false)){
-                        case 1:{
+                    switch (menuItems("add", false)) {
+                        case 1: {
                             try {
                                 Controller.setTrack();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        }break;
-                        case 2:{
+                        }
+                        break;
+                        case 2: {
                             Controller.setGenre();
-                        }break;
+                        }
+                        break;
                     }
                 }
                 break;
@@ -61,25 +55,28 @@ public class ConsoleInterface{
                 }
                 break;
                 case 4: {
-                    switch (menuItems("browse", true)){
-                        case 1:{
+                    switch (menuItems("browse", true)) {
+                        case 1: {
                             displayTracks(Controller.getTracks());
-                        }break;
-                        case 2:{
+                        }
+                        break;
+                        case 2: {
                             displayGenres(Controller.getGenres());
-                        }break;
+                        }
+                        break;
                     }
                 }
                 break;
                 case 5: {
                     //menuItems("find");
-                    displayTracks(Controller.search());
+                    //displayTracks(Controller.search());
                 }
                 break;
             }
         }
     }
 
+    //Read library from xml. If there's no file, it will create with the first track adding
     private static void initXml() throws TransformerException, ParserConfigurationException {
         try {
             Controller.createDocument();
@@ -88,7 +85,6 @@ public class ConsoleInterface{
 
         } catch (IOException e) {
             System.err.println("You library is empty");
-            Controller.createXmlFile();
             mainScreen();
         } catch (SAXException e) {
             e.printStackTrace();
@@ -112,28 +108,28 @@ public class ConsoleInterface{
      * interface for menu items 2,3,5
      */
     private static int menuItems(String action, boolean multiply) {
-        String track="track";
-        String genre="genre";
-        if (multiply){
-            track+="s";
-            genre+="s";
+        String track = "track";
+        String genre = "genre";
+        if (multiply) {
+            track += "s";
+            genre += "s";
         }
         System.out.printf("1 - %s %s\n", action, track);
         System.out.printf("2 - %s %s\n", action, genre);
         System.out.println("3 - back");
-        return in.nextInt();
+        return enterMenuItem(3);
     }
 
-    private static void displayTracks(ArrayList<Track> tracks){
-        if (tracks.size()==0){
+    private static void displayTracks(ArrayList<Track> tracks) {
+        if (tracks.size() == 0) {
             System.out.println("Library is empty");
             System.out.println("------------------------------\n");
-        }else {
+        } else {
             for (Track track : tracks) {
                 System.out.println("Name: " + track.getTrackName());
                 System.out.println("Artist: " + track.getTrackArtist());
                 System.out.println("Album: " + track.getTrackAlbum());
-                System.out.println("Genre: "+track.getTrackGenre().getGenreName());
+                System.out.println("Genre: " + track.getTrackGenre().getGenreName());
                 int minutes = track.getTrackLength() / 60;
                 int seconds = track.getTrackLength() - minutes * 60;
                 System.out.printf("Length: %d:%d\n", minutes, seconds);
@@ -142,17 +138,38 @@ public class ConsoleInterface{
         }
     }
 
-    private static void displayGenres(ArrayList<Genre> genres){
-        if (genres.size()==0){
+    private static void displayGenres(ArrayList<Genre> genres) {
+        if (genres.size() == 0) {
             System.out.println("Library is empty");
             System.out.println("------------------------------\n");
-        }
-        else{
-            for (Genre genre:genres){
-                System.out.println("Genre name: "+genre.getGenreName());
-                System.out.println("Etablishing Century: "+genre.getEstablishingCentury());
+        } else {
+            for (Genre genre : genres) {
+                System.out.println("Genre name: " + genre.getGenreName());
+                System.out.println("Etablishing Century: " + genre.getEstablishingCentury());
                 System.out.println("------------------------------\n");
             }
         }
+    }
+
+    /**
+     * We need to be sure that user will input correct menu item
+     */
+    private static int enterMenuItem(int limit) {
+        boolean correctEnter = false;
+        int close = 0;
+        while (!correctEnter) {
+            try {
+                close = in.nextInt();
+                if (close > 0 && close <= limit) {
+                    correctEnter = true;
+                } else {
+                    System.err.println("Wrong enter, input correct menu item");
+                }
+            } catch (InputMismatchException e) {
+                System.err.println("Wrong enter, input correct menu item");
+                in.next();
+            }
+        }
+        return close;
     }
 }
