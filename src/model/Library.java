@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public class Library implements Serializable{
     private ArrayList<Track> tracksStore = new ArrayList<>();
-    private ArrayList<Genre> genres = new ArrayList<>();
+    private ArrayList<Genre> genresStore = new ArrayList<>();
     private int tracksQuantity=0;
 
     public int getGenresQuantity() {
@@ -38,15 +38,23 @@ public class Library implements Serializable{
     }
 
     public void setGenre(Genre genre){
-        genres.add(genre);
+        genresStore.add(genre);
         genresQuantity++;
     }
 
-    public ArrayList getTracks(){
-        return tracksStore;
+    public Track[] getTracks(){
+        Track[] tracks = new Track[tracksQuantity];
+        for (int i=0;i<tracksQuantity;i++){
+            tracks[i]= tracksStore.get(i);
+        }
+        return tracks;
     }
 
-    public ArrayList getGenres(){
+    public Genre[] getGenresStore(){
+        Genre[] genres  =new Genre[genresQuantity];
+        for (int i=0;i<genresQuantity;i++){
+            genres[i] = this.genresStore.get(i);
+        }
         return genres;
     }
 
@@ -80,12 +88,26 @@ public class Library implements Serializable{
         return searchTrack;
     }
 
+    /*public Track search(String string){
+        Pattern p = Pattern.compile(string);
+        for(int i = 0; i< tracksQuantity; i++ ) {
+            Matcher trackName=p.matcher(tracksStore.get(i).getTrackName());
+            Matcher trackArtist=p.matcher(tracksStore.get(i).getTrackArtist());
+            Matcher trackAlbum=p.matcher(tracksStore.get(i).getTrackAlbum());
+            if(trackName.find() || trackArtist.find() || trackAlbum.find()){
+                int j = 0;
+                return tracksStore.get(i);
+            }
+        }
+        return null;
+    }*/
+
     public Genre getGenre(String genre){
         Pattern pattern = Pattern.compile(genre);
         for (int i=0;i<genresQuantity;i++){
-            Matcher genreName= pattern.matcher(genres.get(i).getGenreName());
+            Matcher genreName= pattern.matcher(genresStore.get(i).getGenreName());
             if (genreName.find()){
-                return genres.get(i);
+                return genresStore.get(i);
             }
         }
         return null;

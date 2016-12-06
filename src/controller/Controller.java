@@ -18,26 +18,21 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Controller {
-    private final static String PATH = "C:\\Users\\gavri\\Documents\\NetCracker\\Curator\\MusicManager\\data\\xml\\tracks.xml";
+    private final static String PATH = "C:\\Users\\gavri\\Documents\\NetCracker\\Curator\\MusicManager\\data\\xml\\trackStore.xml";
+    //private final static String PATH = "D:\\test.xml";
 
     private static Scanner in = new Scanner(System.in);
     private static Library library = new Library();
     private static org.w3c.dom.Document xmlDoc;
 
-    public Controller() throws IOException, SAXException, ParserConfigurationException {
-        createDocument();
-        readXml();
-    }
-
     /**
      * add track to library
      */
-    public static void setTrack() throws IOException {
+    public static void setTrack() throws IOException, TransformerException, ParserConfigurationException {
         System.out.println("Added new track");
         System.out.println("Enter track name");
         String trackName = in.nextLine();
@@ -49,16 +44,22 @@ public class Controller {
         int trackLength = enterTrackLength();
 
         System.out.println("Now, select genre");
-        String genreName = in.nextLine();
-        Genre trackGenre = library.getGenre(genreName);
-        if (trackGenre == null) {
+        String genreName = in.next();
+        Genre genre = library.getGenre(genreName);
+        if (genre == null) {
             System.out.println("\nThis genre does not exist");
             setGenre();
-            trackGenre = library.getGenre(genreName);
+            genre = library.getGenre(genreName);
+            writeGenreToXml(library.getGenresQuantity(), genre);
         }
-        Track track = new Track(trackName, trackArtist, trackAlbum, trackLength, trackGenre);
+        Track track = new Track(trackName, trackArtist, trackAlbum, trackLength, genre);
         library.setTrack(track);
-        writeTrackXml(library.getTracksQuantity(), track);
+        //delete this try/catch
+        try {
+            writeTrackToXml(library.getTracksQuantity(), track);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
         System.out.println("-----------------------\n");
     }
 
@@ -75,20 +76,27 @@ public class Controller {
         library.setGenre(genre);
     }
 
-    public static ArrayList getGenres() {
-        return library.getGenres();
+    public static Genre[] getGenres() {
+        return library.getGenresStore();
     }
 
-    public static ArrayList getTracks() {
+    public static Track[] getTracks() {
         return library.getTracks();
     }
 
-    public static ArrayList<Track> search() {
+    public static Library getLibrary() {
+        return library;
+    }
+    /*public static ArrayList<Track> search() {
         System.out.println("Enter track name");
         String string = in.next();
         return library.search(string);
-    }
+    }*/
 
+    public static Track search(String string) {
+        System.out.println("Enter track name");
+        return library.search(string);
+    }
 
     //ser
     public static void serialization() {
@@ -118,8 +126,6 @@ public class Controller {
     }
 
     /**
-     *
-     *
      * @return
      */
     private static int enterTrackLength() {
@@ -203,24 +209,25 @@ public class Controller {
 
     public static void readXml() {
         NodeList tracks = xmlDoc.getElementsByTagName("track");
+        NodeList genres = xmlDoc.getElementsByTagName("genre");
+        //Read and input genres into library
+        for (int i = 0; i < genres.getLength(); i++) {
+            NamedNodeMap genre = genres.item(i).getAttributes();
+            String genreName = genre.getNamedItem("genreName").getNodeValue();
+            int establishingCentury = Integer.parseInt(genre.getNamedItem("establishingCentury").getNodeValue());
+            Genre newGenre = new Genre(genreName, establishingCentury);
+            library.setGenre(newGenre);
+        }
+        //Read and input track into library
         for (int i = 0; i < tracks.getLength(); i++) {
             NamedNodeMap track = tracks.item(i).getAttributes();
             String trackName = track.getNamedItem("trackName").getNodeValue();
             String trackArtist = track.getNamedItem("trackArtist").getNodeValue();
             String trackAlbum = track.getNamedItem("trackAlbum").getNodeValue();
             int trackLength = Integer.parseInt(track.getNamedItem("trackLength").getNodeValue());
-            Genre genre = new Genre("Jazz", 20);
-
-            Track newTrack = new Track(trackName, trackArtist, trackAlbum, trackLength, genre);
-            try {
-                if (!(library.getGenre("Jazz").equals("Jazz"))) {
-                    library.setGenre(genre);
-                } else {
-                    library.setTrack(newTrack);
-                }
-            } catch (NullPointerException e) {
-                library.setTrack(newTrack);
-            }
+            String trackGenre = track.getNamedItem("trackGenre").getNodeValue();
+            Track newTrack = new Track(trackName, trackArtist, trackAlbum, trackLength, library.getGenre(trackGenre));
+            library.setTrack(newTrack);
         }
     }
 
@@ -236,23 +243,31 @@ public class Controller {
      * Length of library+1 if this object need to add into library, index<length when rewrite.
      *
      * @param index
-     * @param object
+     * @param track
      */
-    private static void writeTrackXml(int index, Track object) throws IOException {
-        NodeList tracks = xmlDoc.getElementsByTagName("track");
+    private static void writeTrackToXml(int index, Track track) throws IOException, TransformerException, ParserConfigurationException, SAXException {
+        if (!(new File(PATH).exists())) {
+            createXmlFile();
+            createDocument();
+        }
         Element newTrack = xmlDoc.createElement("track");
         //xmlDoc.appendChild(newTrack);
         //Node newTrack = xmlDoc.createElement("track");
-        ((Element) newTrack).setAttribute("trackName", object.getTrackName());
-        ((Element) newTrack).setAttribute("trackArtist", object.getTrackArtist());
-        ((Element) newTrack).setAttribute("trackAlbum", object.getTrackAlbum());
-        ((Element) newTrack).setAttribute("trackLength", String.valueOf(object.getTrackLength()));
+        ((Element) newTrack).setAttribute("trackName", track.getTrackName());
+        ((Element) newTrack).setAttribute("trackArtist", track.getTrackArtist());
+        ((Element) newTrack).setAttribute("trackAlbum", track.getTrackAlbum());
+        ((Element) newTrack).setAttribute("trackLength", String.valueOf(track.getTrackLength()));
+        ((Element) newTrack).setAttribute("trackGenre", track.getTrackGenre().getGenreName());
 
-        Node newGenre = xmlDoc.createElement("genre");
-        ((Element) newGenre).setAttribute("genreName", object.getTrackGenre().getGenreName());
-        ((Element) newGenre).setAttribute("establishingCentury", String.valueOf(object.getTrackGenre().getEstablishingCentury()));
-        newTrack.appendChild(newGenre);
         xmlDoc.getDocumentElement().appendChild(newTrack);
+        updateDocument();
+    }
+
+    private static void writeGenreToXml(int index, Genre genre) throws IOException {
+        Element newGenre = xmlDoc.createElement("genre");
+        ((Element) newGenre).setAttribute("genreName", genre.getGenreName());
+        ((Element) newGenre).setAttribute("establishingCentury", String.valueOf(genre.getEstablishingCentury()));
+        xmlDoc.getDocumentElement().appendChild(newGenre);
         updateDocument();
     }
 
