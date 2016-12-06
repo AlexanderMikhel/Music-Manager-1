@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE library SYSTEM "library.dtd">
+<library>
+    <track trackAlbum="Come Fly With Me" trackArtist="Frank Sinatra" trackGenre="Jazz" trackLength="199" trackName="Come Fly With Me"/>
+    <track trackAlbum="Nice 'N' Easy" trackArtist="Frank Sinatra" trackGenre="Jazz" trackLength="214" trackName="Nice 'N' Easy"/>
+    <track trackAlbum="Nice 'N' Easy" trackArtist="Frank Sinatra" trackGenre="Jazz" trackLength="214" trackName="That Old Feeling"/>
+    <track trackAlbum="Everything You've Come To Expect" trackArtist="The Last Shadow Puppets" trackGenre="Alternative" trackLength="224" trackName="Aviation"/>
+    <track trackAlbum="Yours, Dreamily" trackArtist="The Arcs" trackGenre="Alternative" trackLength="199" trackName="Stay in My Corner"/>
+    <track trackAlbum="Seventh Star" trackArtist="Black Sabbath" trackGenre="Heavy Metal" trackLength="269" trackName="No Stranger to Love"/>
+    <track trackAlbum="Love" trackArtist="The Cult" trackGenre="Alternative" trackLength="263" trackName="She Sells Sanctuary"/>
+    <track trackAlbum="French Style" trackArtist="Dean Martin" trackGenre="Vocal" trackLength="216" trackName="April In Paris"/>
+    <track trackAlbum="L.A. Woman" trackArtist="The Doors" trackGenre="Rock" trackLength="470" trackName="L.A. Woman"/>
+    <track trackAlbum="Ain't No Love In the Heart of the City" trackArtist="Bobby Bland" trackGenre="Blues" trackLength="156" trackName="Two Steps from the Blues"/>
+    <track trackAlbum="Blues of Desperation" trackArtist="Joe Bonamassa" trackGenre="Blues" trackLength="347" trackName="Drive"/>
+    <track trackAlbum="Hard Again" trackArtist="Muddy Waters" trackGenre="Blues" trackLength="215" trackName="The Blues Had a Baby and They Named It Rock and Roll"/>
+    <track trackAlbum="Innocents" trackArtist="Moby" trackGenre="Electronic" trackLength="280" trackName="The Last Day"/>
+    <track trackAlbum="Retrograde" trackArtist="James Blake" trackGenre="Electronic" trackLength="224" trackName="Retrograde"/>
+    <track trackAlbum="Innocents" trackArtist="Moby" trackGenre="Electronic" trackLength="360" trackName="Almost Home"/>
+    <track trackAlbum="El Camino" trackArtist="The Black Keys" trackGenre="Rock" trackLength="224" trackName="Gold on the Celling"/>
+
+
+    <genre establishingCentury="20" genreName="Blues"/>
+    <genre establishingCentury="20" genreName="Jazz"/>
+    <genre establishingCentury="20" genreName="Rock"/>
+    <genre establishingCentury="20" genreName="Electronic"/>
+    <genre establishingCentury="18" genreName="Vocal"/>
+    <genre establishingCentury="21" genreName="Alternative"/>
+    <genre establishingCentury="20" genreName="Heavy Metal"/>
+</library>

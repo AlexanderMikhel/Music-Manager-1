@@ -120,8 +120,8 @@ public class ConsoleInterface {
         return enterMenuItem(3);
     }
 
-    private static void displayTracks(ArrayList<Track> tracks) {
-        if (tracks.size() == 0) {
+    private static void displayTracks(Track[] tracks) {
+        if (tracks.length == 0) {
             System.out.println("Library is empty");
             System.out.println("------------------------------\n");
         } else {
@@ -138,14 +138,14 @@ public class ConsoleInterface {
         }
     }
 
-    private static void displayGenres(ArrayList<Genre> genres) {
-        if (genres.size() == 0) {
+    private static void displayGenres(Genre[] genres) {
+        if (genres.length == 0) {
             System.out.println("Library is empty");
             System.out.println("------------------------------\n");
         } else {
             for (Genre genre : genres) {
                 System.out.println("Genre name: " + genre.getGenreName());
-                System.out.println("Etablishing Century: " + genre.getEstablishingCentury());
+                System.out.println("Establishing Century: " + genre.getEstablishingCentury());
                 System.out.println("------------------------------\n");
             }
         }
